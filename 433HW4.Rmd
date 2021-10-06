@@ -1,0 +1,117 @@
+---
+title: "Untitled"
+author: "Sam Gemini"
+date: "10/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r introduction}
+# In the following code, there are a few main results that we find involving avoiding delays.
+# One of them is that in general, you should fly in either the early morning or late night to 
+# avoid delays.  Another result we see is that in spring and summer, there seem to be more/longer
+# delays in the afternoon than in the morning.  Another result we see is the delays seem to be more
+# concentrated around morning and afternoon rush hour if the airport is JFK.  Finally, the airline "9E"
+# has delays concentrated around morning and afternoon rush hour, and much more into the evening as opposed
+# to the middle of the day.
+```
+
+```{r HW4 Result 1}
+# The first finding is shown below by the graph of scheduled departure time vs. departure delay.
+# As we can see, there are relatively few delays on the far left of the graph (five and six A. M.) and
+# on the far right of the graph (ten and eleven P. M.).  Therefore, these are the general times you should
+# fly if you want to avoid delays.
+
+library(nycflights13)
+ggplot(data = flights) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+flights %>%
+  summarize(sched_dep_time, dep_delay)
+```
+
+```{r Result 2}
+# In this section, we filter out the months for the four different seasons.  Winter is the first three
+# months, spring the second three, summer the third three, and autumn the final three.  As shown by the 
+# graphs and the summary, the morning is a better time to fly to avoid delays in the spring and summer.
+# This can potentially be explained by the prevalence of storms in the afternoon in the spring and summer.
+
+winter = filter(flights, month < 4)
+ggplot(data = winter) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+spring = filter(flights, month < 7 & month > 3)
+ggplot(data = spring) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+summer = filter(flights, month < 10 & month > 6)
+ggplot(data = summer) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+autumn = filter(flights, month < 13 & month > 9)
+ggplot(data = autumn) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+flights %>%
+  summarize(month, sched_dep_time, dep_delay)
+```
+
+```{r Result 3}
+# In this section, we filter out the three different airports separately and graph scheduled 
+# departure time vs. departure delay for each of them separately.  From the graphs, we find that
+# at JFK the delays seem to be more concentrated around the morning and afternoon rush hour, so it would 
+# be a good idea to stay away from those flight times (8 A. M. and 4 - 5 P. M.) to avoid delays.  This could be 
+# because JFK is such a busy airport.
+
+EWR = filter(flights, origin == "EWR")
+ggplot(data = EWR) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+JFK = filter(flights, origin == "JFK")
+ggplot(data = JFK) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+Laguardia = filter(flights, origin == "LGA")
+ggplot(data = Laguardia) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+flights %>%
+  summarize(origin, sched_dep_time, dep_delay)
+```
+
+```{r Last Result}
+# Finally, as we can see in the scheduled departure time vs. departure delay graph for the airline
+# 9E, this airline has delays concentrated in the morning and afternoon rush hour and well into the evening
+# (6 - 8 P. M.).  To avoid delays with this airline, it would be best to look for flights that are scheduled
+# to depart in the middle of the day.
+
+NINEE = filter(flights, carrier == "9E")
+ggplot(data = NINEE) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+A_A = filter(flights, origin == "AA")
+ggplot(data = AA) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+AS = filter(flights, origin == "AS")
+ggplot(data = AS) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+B6 = filter(flights, origin == "B6")
+ggplot(data = B6) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+DL = filter(flights, origin == "DL")
+ggplot(data = DL) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+EV = filter(flights, origin == "EV")
+ggplot(data = EV) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+F9 = filter(flights, origin == "F9")
+ggplot(data = F9) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+FL = filter(flights, origin == "FL")
+ggplot(data = FL) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+HA = filter(flights, origin == "HA")
+ggplot(data = HA) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+MQ = filter(flights, origin == "MQ")
+ggplot(data = MQ) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+OO = filter(flights, origin == "OO")
+ggplot(data = OO) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+UA = filter(flights, origin == "UA")
+ggplot(data = UA) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+US = filter(flights, origin == "US")
+ggplot(data = US) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+VX = filter(flights, origin == "VX")
+ggplot(data = VX) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+WN = filter(flights, origin == "WN")
+ggplot(data = WN) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+YV = filter(flights, origin == "YV")
+ggplot(data = YV) + geom_point(mapping = aes(x = sched_dep_time, y = dep_delay))
+
+flights %>%
+  summarize(carrier, sched_dep_time, dep_delay)
+```
